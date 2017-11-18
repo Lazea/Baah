@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour {
+public class Danger : MonoBehaviour {
 
     public float speed;
-
-    float score = 0f;
-
-    public Danger danger1;
 
 	// Use this for initialization
 	void Start () {
@@ -17,6 +13,6 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        danger1.speed = speed;
+        transform.position -= Vector3.forward * speed * Time.deltaTime;
 	}
 }
