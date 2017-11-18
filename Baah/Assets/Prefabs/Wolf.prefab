@@ -107,4 +107,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   horizontalRange: 4
   verticalRange: 3
-  speed: 0
+  herd: {fileID: 0}
