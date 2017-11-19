@@ -40,6 +40,6 @@ public class Sheep : MonoBehaviour {
 
     void GoToTarget(Vector3 target)
     {
-        transform.position = target + targetOffset;
+        transform.localPosition = target + targetOffset;
     }
 }

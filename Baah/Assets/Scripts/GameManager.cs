@@ -7,37 +7,49 @@ public class GameManager : MonoBehaviour {
 
     public float speed;
     float time;
+    float timeInterval;
 
-    int difficulty = 0;
+    public float difficulty = 0;
     public int scoreRate;
     public float scoreMultiplier;
     int score = 0;
     int sheepCount = 0;
 
     public Danger danger1;
+    Transform dangers;
     Herd herd;
 
     Canvas uiCanvas;
     Text scoreText;
     Text sheepCountText;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         uiCanvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         scoreText = uiCanvas.transform.GetChild(0).Find("ScoreText").GetComponent<Text>();
         sheepCountText = uiCanvas.transform.GetChild(0).Find("SheepCountText").GetComponent<Text>();
 
+        dangers = GameObject.Find("Dangers").transform;
+
         herd = GameObject.Find("Herd").GetComponent<Herd> ();
         herd.SetGameManager(this);
         sheepCount = herd.GetSheepCount();
+
+        NewTimeInterval();
 
         UpdateUI();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        danger1.speed = speed;
-	}
+        if(time >= timeInterval)
+        {
+            SpawnDanger();
+
+            NewTimeInterval();
+            time = 0f;
+        }
+    }
 
     private void LateUpdate()
     {
@@ -45,7 +57,6 @@ public class GameManager : MonoBehaviour {
 
         if(time >= 0.5f)
         {
-            time = 0f;
             score += GetScore();
         }
 
@@ -68,5 +79,17 @@ public class GameManager : MonoBehaviour {
         sheepCount = count;
 
         UpdateUI();
+    }
+
+    void NewTimeInterval()
+    {
+        float modifier = 1 - difficulty;
+        timeInterval = Random.Range(1 * modifier, 3 * modifier);
+    }
+
+    void SpawnDanger()
+    {
+        Danger danger = Instantiate(danger1, dangers.transform.position + Vector3.right * Random.Range(-1, 2) * 4, Quaternion.identity, dangers);
+        danger.speed = speed;
     }
 }
