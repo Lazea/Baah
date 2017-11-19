@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour {
 
     public float speed;
     float time;
+    float scoreTime;
+    float spawnTime;
     float timeInterval;
 
     public float difficulty = 0;
@@ -42,22 +44,35 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(time >= timeInterval)
+        time += Time.deltaTime;
+        spawnTime += Time.deltaTime;
+
+        if (spawnTime >= timeInterval)
         {
             SpawnDanger();
 
             NewTimeInterval();
-            time = 0f;
+            spawnTime = 0f;
+        }
+
+        if (time >= 20)
+        {
+            difficulty += 0.1f;
+            difficulty = Mathf.Clamp01(difficulty);
+
+            time = 0;
         }
     }
 
     private void LateUpdate()
     {
-        time += Time.deltaTime;
+        scoreTime += Time.deltaTime;
 
         if(time >= 0.5f)
         {
             score += GetScore();
+
+            scoreTime = 0f;
         }
 
         UpdateUI();
@@ -83,13 +98,13 @@ public class GameManager : MonoBehaviour {
 
     void NewTimeInterval()
     {
-        float modifier = 1 - difficulty;
+        float modifier = 2f - difficulty;
         timeInterval = Random.Range(1 * modifier, 3 * modifier);
     }
 
     void SpawnDanger()
     {
         Danger danger = Instantiate(danger1, dangers.transform.position + Vector3.right * Random.Range(-1, 2) * 4, Quaternion.identity, dangers);
-        danger.speed = speed;
+        danger.speed = speed * (1 + difficulty);
     }
 }

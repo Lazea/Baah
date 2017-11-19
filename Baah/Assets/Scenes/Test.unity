@@ -929,7 +929,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  difficulty: 0
+  difficulty: 1
   scoreRate: 5
   scoreMultiplier: 0
   danger1: {fileID: 114385836160992112, guid: f717e289d83a89f4b96fc9409a9d8d38, type: 2}
